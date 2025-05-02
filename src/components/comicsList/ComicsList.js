@@ -18,12 +18,10 @@ const ComicsList = () => {
     const {loading, error, getAllComics} = useMarvelServices();
 
     useEffect(() => {
-        console.log('useEffect onRequest')
         onRequest(offset, true);
     }, [])
 
     const onRequest = (offset, initial) => {
-        console.log('onRequest')
         initial ? setNewComicsLoad(false) : setNewComicsLoad(true);
 
         getAllComics(offset)
@@ -40,11 +38,9 @@ const ComicsList = () => {
         setNewComicsLoad(false);
         setOffset(offset => offset + 8);
         setEndedComics(ended);
-        console.log('onChangeComicsList')
     }
 
     const renderComicsList = (list) => {
-        console.log('renderComicsList')
         const items = list.map((item, i) => {
             let contain = ''
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
@@ -73,7 +69,6 @@ const ComicsList = () => {
     const problem = error ? <ErrorMassage/> : null;
     const items = renderComicsList(comicsList);
 
-    console.log('new component')
 
     return (
         <div className="comics__list">

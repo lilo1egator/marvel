@@ -132,7 +132,6 @@ const FormFind = ({findChar}) => {
     }, [char])
 
     const showRedirect = (values) => {
-        console.log(values)
         return(
             <div className='char__form'>
                 <div className="char__comics" style={{color:'#03710E'}}>There is! Visit {values} page?</div>

@@ -1,36 +1,39 @@
+import md5 from 'blueimp-md5';
 import { useHttp } from "../hooks/http.hooks";
-import { key } from './api.js'
+import { keyPublic, keyPrivate } from './api.js';
 
 const useMarvelServices = () => {
     const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
-    const _apiKey = `apikey=${key}`;
+    const _apiKey = `apikey=${keyPublic}`;
     const _baseOffset = 210;
     const _baseComicsOffset = 0;
-
+    const ts = String(new Date().getTime());
+    const toHash = ts + keyPrivate + keyPublic;
+    const hash = md5(toHash);
     const {loading, error, request, clearError} = useHttp();
 
     const getAllCharacters = async (offset = _baseOffset) => {
-        const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`)
+        const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&ts=${ts}&${_apiKey}&hash=${hash}`)
         return res.data.results.map(_transformCharecter)
     }
 
     const getCharacter = async (id) => {
-        const res = await request(`${_apiBase}characters/${id}?${_apiKey}`)
+        const res = await request(`${_apiBase}characters/${id}?ts=${ts}&${_apiKey}&hash=${hash}`)
         return _transformCharecter(res.data.results[0])
     }
 
     const getAllComics = async (offset =_baseComicsOffset) => {
-        const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`)
+        const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&ts=${ts}&${_apiKey}&hash=${hash}`)
         return res.data.results.map(_transformComics)
     }
 
     const getComic = async (id) => {
-        const res = await request(`${_apiBase}comics/${id}?${_apiKey}`)
+        const res = await request(`${_apiBase}comics/${id}?ts=${ts}&${_apiKey}&hash=${hash}`)
         return _transformComics(res.data.results[0])
     }
 
     const getCharacterName = async (name) => {
-        const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`)
+        const res = await request(`${_apiBase}characters?name=${name}&ts=${ts}&${_apiKey}&hash=${hash}`)
         return _transformCharecterName(res.data.results[0])
     }
 

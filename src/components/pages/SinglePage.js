@@ -14,7 +14,6 @@ const SinglePage = ({id, name, setName, Component, props, getMethod}) => {
     }, [id])
     const onRequest = () => {
         clearError();
-        console.log()
         if(getMethod == 'getCharacterName') {
             return(
                 getCharacterName(id)
